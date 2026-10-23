@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NBA 4.6 Management Portal | CSE</title>
+<style>
+:root{--navy:#12233f;--blue:#2356a8;--bg:#f4f7fb;--line:#dce4ef;--muted:#65748b;--white:#fff;--green:#16794b;--red:#b42318}
+*{box-sizing:border-box}body{margin:0;font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Arial;color:#17243a;background:var(--bg)}
+button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:9px;padding:10px 14px;background:var(--blue);color:white;font-weight:600}button.secondary{background:#e8eef8;color:#1d3e73}button.danger{background:#b42318}button.small{padding:6px 9px;font-size:13px}
+header{background:var(--navy);color:white;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px}.logo{width:44px;height:44px;border-radius:12px;background:#fff;color:var(--navy);display:grid;place-items:center;font-weight:900;font-size:18px}.brand h1{font-size:19px;margin:0}.brand p{margin:3px 0 0;color:#cbd7e9;font-size:13px}
+.wrap{max-width:1400px;margin:auto;padding:22px}.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:18px}.toolbar .grow{flex:1}
+.notice{padding:12px 14px;background:#fff7e6;border:1px solid #f1d59a;color:#694c10;border-radius:10px;margin-bottom:18px;font-size:13px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}.stat,.panel{background:white;border:1px solid var(--line);border-radius:14px;padding:17px;box-shadow:0 2px 8px #12233f08}.stat .label{font-size:13px;color:var(--muted)}.stat .num{font-size:30px;font-weight:750;margin-top:7px}.stat .sub{font-size:12px;color:var(--muted)}
+.tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}.tabs button{background:#e5ebf4;color:#34435a}.tabs button.active{background:var(--blue);color:white}
+.panel{margin-bottom:18px}.panel h2{font-size:17px;margin:0 0 14px}.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}.filters input,.filters select{max-width:260px}
+input,select,textarea{width:100%;padding:10px 11px;border:1px solid #cbd5e1;border-radius:8px;background:white;color:#17243a}label{display:block;font-size:12px;font-weight:700;color:#526178;margin-bottom:5px}.field{margin-bottom:12px}.gridform{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:10px}table{border-collapse:collapse;width:100%;min-width:800px;background:white}th,td{padding:11px 12px;text-align:left;border-bottom:1px solid #e7edf5;font-size:13px;vertical-align:top}th{background:#f6f8fc;color:#4a5a72;font-size:12px;text-transform:uppercase;letter-spacing:.03em}tr:last-child td{border-bottom:0}.empty{text-align:center;color:var(--muted);padding:28px}
+.hidden{display:none!important}.pill{display:inline-block;padding:3px 8px;border-radius:20px;background:#e8f4ed;color:var(--green);font-size:11px;font-weight:700}.muted{color:var(--muted);font-size:13px}.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}.foot{color:var(--muted);font-size:12px;text-align:center;padding:20px}
+.modalback{position:fixed;inset:0;background:#0d1b2dcc;display:grid;place-items:center;padding:18px;z-index:5}.modal{background:white;border-radius:16px;padding:24px;width:min(560px,100%);max-height:90vh;overflow:auto}.modal h2{margin-top:0}.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
+#loginScreen{min-height:100vh;display:grid;place-items:center;padding:20px;background:linear-gradient(135deg,#12233f,#2356a8)}.loginbox{background:white;width:min(430px,100%);padding:28px;border-radius:18px;box-shadow:0 20px 60px #07152b55}.loginbox h1{margin:0 0 6px;font-size:24px}.loginbox p{color:var(--muted);font-size:13px}.loginbox .field{margin-top:15px}.error{color:var(--red);font-size:13px;margin-top:10px}
+@media(max-width:850px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.gridform{grid-template-columns:repeat(2,minmax(0,1fr))}.two{grid-template-columns:1fr}}
+@media(max-width:520px){.wrap{padding:12px}.stats{gap:8px}.stat{padding:12px}.stat .num{font-size:24px}.gridform{grid-template-columns:1fr}header{padding:14px}.brand h1{font-size:16px}}
+</style>
+</head>
+<body>
+<section id="loginScreen">
+ <div class="loginbox">
+  <div class="logo">NBA</div><h1>NBA 4.6 Management Portal</h1>
+  <p>CSE Department · Placements, Higher Studies & Entrepreneurship</p>
+  <div class="notice">First-time setup: use the temporary default password <b>ChangeMe@123</b>, then change it immediately in Settings. This demo login is browser-side and is not secure enough for confidential data.</div>
+  <form id="loginForm"><div class="field"><label for="username">Username</label><input id="username" autocomplete="username" value="admin" required></div><div class="field"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" required></div><button style="width:100%;margin-top:8px">Sign in</button><div id="loginError" class="error"></div></form>
+ </div>
+</section>
+<div id="app" class="hidden">
+<header><div class="brand"><div class="logo">NBA</div><div><h1>NBA Criterion 4.6 Management Portal</h1><p>K.S.R.M. College of Engineering · CSE Department</p></div></div><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span id="storageLabel" class="pill">Browser storage</span><button class="secondary" id="settingsBtn">Settings</button><button class="secondary" id="logoutBtn">Sign out</button></div></header>
+<main class="wrap">
+<div class="notice"><b>Important:</b> This starter version stores records in this browser only. Use Export Backup regularly. GitHub Pages is static hosting and cannot securely protect student records with a client-side password. Follow README instructions before storing real student data or connecting Google Sheets.</div>
+<div class="toolbar"><div class="grow"><label for="academicYear">Academic year</label><select id="academicYear" style="max-width:220px"><option value="2025-26">2025-26</option><option value="2024-25">2024-25</option><option value="2023-24">2023-24</option><option value="2022-23">2022-23</option><option value="2021-22">2021-22</option></select></div><button id="addBtn">+ Add record</button><button class="secondary" id="importBtn">Import CSV</button><button class="secondary" id="exportCsvBtn">Export CSV</button><button class="secondary" id="backupBtn">Export Backup</button><button class="secondary" id="restoreBtn">Restore Backup</button><input type="file" id="csvFile" accept=".csv,text/csv" class="hidden"><input type="file" id="backupFile" accept=".json,application/json" class="hidden"></div>
+<div class="stats">
+<div class="stat"><div class="label">Final-year students</div><div class="num" id="totalStudents">0</div><div class="sub">Unique student records in selected year</div></div>
+<div class="stat"><div class="label">Students placed</div><div class="num" id="placedCount">0</div><div class="sub">Unique students with placement marked</div></div>
+<div class="stat"><div class="label">Higher studies</div><div class="num" id="higherCount">0</div><div class="sub">Unique students pursuing higher studies</div></div>
+<div class="stat"><div class="label">Entrepreneurs</div><div class="num" id="entreCount">0</div><div class="sub">Unique students with entrepreneurship marked</div></div>
+</div>
+<div class="tabs"><button class="active" data-tab="all">All records</button><button data-tab="placements">Placements</button><button data-tab="higher">Higher studies</button><button data-tab="entrepreneurship">Entrepreneurship</button><button data-tab="reports">NBA reports</button></div>
+<section id="recordsPanel" class="panel"><h2 id="recordsTitle">Student records</h2><div class="filters"><input id="search" placeholder="Search name, roll number, company…"><select id="statusFilter"><option value="">All outcomes</option><option value="placement">Placement</option><option value="higher">Higher studies</option><option value="entrepreneurship">Entrepreneurship</option></select><button class="secondary" id="clearFilters">Clear filters</button></div><div class="tablewrap"><table><thead><tr><th>Student</th><th>Roll number</th><th>Year</th><th>Placement</th><th>Higher studies</th><th>Entrepreneurship</th><th>Actions</th></tr></thead><tbody id="recordRows"></tbody></table></div><p class="muted">Tip: keep one row per student per graduating batch. Add additional offers in the placement details field; unique placed students are counted once.</p></section>
+<section id="reportsPanel" class="panel hidden"><h2>NBA 4.6 year-wise summary</h2><p class="muted">Use the applicable current NBA SAR manual to verify definitions, denominators, overlap rules and the prescribed index formula before submitting accreditation evidence.</p><div class="tablewrap"><table><thead><tr><th>Academic year</th><th>Final-year students</th><th>Placed students</th><th>Higher studies</th><th>Entrepreneurs</th><th>Placement %</th><th>Evidence status</th></tr></thead><tbody id="reportRows"></tbody></table></div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px"><button id="reportCsv">Export report CSV</button><button class="secondary" id="printReport">Print / Save PDF</button></div></section>
+<section class="two"><div class="panel"><h2>Evidence checklist</h2><p class="muted">Add a Google Drive URL or document reference in each student's record. Keep files in institution-approved access-controlled storage.</p><ul><li>Placement offer / joining proof</li><li>Higher-studies admission proof</li><li>Startup registration / incubation / activity evidence</li><li>Student-wise supporting data and year-wise summary</li></ul></div><div class="panel"><h2>Data management</h2><p class="muted">Import a CSV with these headers (exact names recommended):</p><code>name,rollNo,academicYear,branch,placed,company,packageLpa,jobRole,placementEvidence,higherStudies,institution,course,country,higherEvidence,entrepreneur,ventureName,ventureYear,ventureEvidence,notes</code><p style="margin-top:14px"><button class="secondary" id="templateBtn">Download CSV template</button></p></div></section>
+</main><div class="foot">NBA Criterion 4.6 · CSE Department · Draft management tool — verify figures against official NBA requirements.</div>
+</div>
+<div id="modalRoot" class="hidden"></div>
+<script>
+const KEY='nba46_records_v1', AUTH='nba46_auth_v1', PASSKEY='nba46_password_v1';
+const headers=['name','rollNo','academicYear','branch','placed','company','packageLpa','jobRole','placementEvidence','higherStudies','institution','course','country','higherEvidence','entrepreneur','ventureName','ventureYear','ventureEvidence','notes'];
+let records=[],activeTab='all',editingId=null;
+const $=id=>document.getElementById(id);
+function load(){try{records=JSON.parse(localStorage.getItem(KEY)||'[]')}catch{records=[]}}
+function save(){localStorage.setItem(KEY,JSON.stringify(records));render()}
+function truth(v){return ['true','yes','1','y','placed'].includes(String(v??'').trim().toLowerCase())}
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function currentYear(){return $('academicYear').value}
+function rowsForYear(y){return records.filter(r=>r.academicYear===y)}
+function countUnique(arr,key){return new Set(arr.filter(r=>truth(r[key])).map(r=>r.rollNo||r.id)).size}
+function render(){
+ const yr=currentYear(), list=rowsForYear(yr);$('totalStudents').textContent=new Set(list.map(r=>r.rollNo||r.id)).size;
+ $('placedCount').textContent=countUnique(list,'placed');$('higherCount').textContent=countUnique(list,'higherStudies');$('entreCount').textContent=countUnique(list,'entrepreneur');
+ let q=$('search').value.toLowerCase(),sf=$('statusFilter').value;
+ let shown=records.filter(r=>r.academicYear===yr);
+ if(activeTab==='placements')shown=shown.filter(r=>truth(r.placed));
+ if(activeTab==='higher')shown=shown.filter(r=>truth(r.higherStudies));
+ if(activeTab==='entrepreneurship')shown=shown.filter(r=>truth(r.entrepreneur));
+ if(sf==='placement')shown=shown.filter(r=>truth(r.placed));if(sf==='higher')shown=shown.filter(r=>truth(r.higherStudies));if(sf==='entrepreneurship')shown=shown.filter(r=>truth(r.entrepreneur));
+ if(q)shown=shown.filter(r=>headers.some(k=>String(r[k]??'').toLowerCase().includes(q)));
+ $('recordsPanel').classList.toggle('hidden',activeTab==='reports');$('reportsPanel').classList.toggle('hidden',activeTab!=='reports');
+ $('recordsTitle').textContent=({all:'Student records',placements:'Placement records',higher:'Higher-studies records',entrepreneurship:'Entrepreneurship records'})[activeTab]||'Student records';
+ $('recordRows').innerHTML=shown.length?shown.map(r=>`<tr><td><b>${esc(r.name)}</b><br><span class="muted">${esc(r.branch||'CSE')}</span></td><td>${esc(r.rollNo)}</td><td>${esc(r.academicYear)}</td><td>${truth(r.placed)?'<span class="pill">Yes</span>':'—'}${r.company?'<br>'+esc(r.company):''}${r.packageLpa?'<br>₹'+esc(r.packageLpa)+' LPA':''}</td><td>${truth(r.higherStudies)?'<span class="pill">Yes</span>':'—'}${r.institution?'<br>'+esc(r.institution):''}</td><td>${truth(r.entrepreneur)?'<span class="pill">Yes</span>':'—'}${r.ventureName?'<br>'+esc(r.ventureName):''}</td><td><button class="small" onclick="editRecord('${r.id}')">Edit</button> <button class="small danger" onclick="deleteRecord('${r.id}')">Delete</button></td></tr>`).join(''):'<tr><td colspan="7" class="empty">No records for this year. Click “Add record” or import a CSV file.</td></tr>';
+ const years=[...new Set([...records.map(r=>r.academicYear), '2025-26','2024-25','2023-24','2022-23','2021-22'])].sort().reverse();
+ $('reportRows').innerHTML=years.map(y=>{let a=rowsForYear(y),n=new Set(a.map(r=>r.rollNo||r.id)).size,p=countUnique(a,'placed'),h=countUnique(a,'higherStudies'),e=countUnique(a,'entrepreneur');return `<tr><td>${esc(y)}</td><td>${n}</td><td>${p}</td><td>${h}</td><td>${e}</td><td>${n?(100*p/n).toFixed(2)+'%':'—'}</td><td>${a.length?'Records entered':'No data'}</td></tr>`}).join('');
+}
+function openModal(title,record={}){
+ editingId=record.id||null;
+ const fields=[
+ ['name','Student name','text'],['rollNo','Roll number','text'],['academicYear','Academic year','text'],['branch','Branch','text'],
+ ['placed','Placed? (yes/no)','select'],['company','Company name','text'],['packageLpa','Package (LPA)','number'],['jobRole','Job role','text'],['placementEvidence','Placement evidence URL','url'],
+ ['higherStudies','Higher studies? (yes/no)','select'],['institution','Institution / university','text'],['course','Course','text'],['country','Country','text'],['higherEvidence','Higher-studies evidence URL','url'],
+ ['entrepreneur','Entrepreneur? (yes/no)','select'],['ventureName','Startup / venture name','text'],['ventureYear','Venture year','text'],['ventureEvidence','Entrepreneurship evidence URL','url'],['notes','Notes','textarea']];
+ let html=`<div class="modalback" id="modalBack"><div class="modal"><h2>${title}</h2><form id="recordForm"><div class="gridform">`;
+ fields.forEach(([k,label,type])=>{let val=record[k]??(k==='academicYear'?currentYear():k==='branch'?'CSE':'');html+=`<div class="field" ${['notes'].includes(k)?'style="grid-column:1/-1"':''}><label for="f_${k}">${label}</label>`;
+ if(type==='select')html+=`<select id="f_${k}"><option value="no" ${!truth(val)?'selected':''}>No</option><option value="yes" ${truth(val)?'selected':''}>Yes</option></select>`;
+ else if(type==='textarea')html+=`<textarea id="f_${k}" rows="3">${esc(val)}</textarea>`;
+ else html+=`<input id="f_${k}" type="${type}" value="${esc(val)}" ${['name','rollNo','academicYear'].includes(k)?'required':''}>`;
+ html+='</div>'});
+ html+=`</div><div class="modal-actions"><button type="button" class="secondary" id="cancelModal">Cancel</button><button type="submit">Save record</button></div></form></div></div>`;
+ $('modalRoot').innerHTML=html;$('modalRoot').classList.remove('hidden');$('cancelModal').onclick=closeModal;
+ $('recordForm').onsubmit=e=>{e.preventDefault();let obj={};fields.forEach(([k])=>obj[k]=$('f_'+k).value.trim());obj.id=editingId||crypto.randomUUID();obj.branch=obj.branch||'CSE';if(editingId)records=records.map(r=>r.id===editingId?obj:r);else records.push(obj);closeModal();save()};
+}
+function closeModal(){$('modalRoot').classList.add('hidden');$('modalRoot').innerHTML='';editingId=null}
+window.editRecord=id=>{let r=records.find(x=>x.id===id);if(r)openModal('Edit student record',r)};
+window.deleteRecord=id=>{let r=records.find(x=>x.id===id);if(r&&confirm('Delete record for '+r.name+'? This cannot be undone unless you have a backup.')){records=records.filter(x=>x.id!==id);save()}};
+function download(name,content,type='text/plain;charset=utf-8'){let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([content],{type}));a.download=name;a.click();URL.revokeObjectURL(a.href)}
+function csvCell(v){let s=String(v??'');return /[",\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s}
+function toCsv(arr,keys=headers){return [keys.join(','),...arr.map(r=>keys.map(k=>csvCell(r[k])).join(','))].join('\r\n')}
+function parseCSV(text){let out=[],row=[],field='',quoted=false;for(let i=0;i<text.length;i++){let c=text[i];if(quoted){if(c==='"'&&text[i+1]==='"'){field+='"';i++}else if(c==='"')quoted=false;else field+=c}else if(c==='"')quoted=true;else if(c===','){row.push(field);field=''}else if(c==='\n'){row.push(field.replace(/\r$/,''));out.push(row);row=[];field=''}else field+=c}if(field.length||row.length){row.push(field.replace(/\r$/,''));out.push(row)}return out}
+function importCsv(file){let fr=new FileReader();fr.onload=()=>{try{let data=parseCSV(fr.result),hs=data.shift().map(x=>x.trim());let imported=data.filter(row=>row.some(v=>v.trim())).map(row=>{let o={};hs.forEach((h,i)=>{if(headers.includes(h))o[h]=row[i]??''});o.id=crypto.randomUUID();o.branch=o.branch||'CSE';o.academicYear=o.academicYear||currentYear();['placed','higherStudies','entrepreneur'].forEach(k=>o[k]=truth(o[k])?'yes':'no');return o});if(confirm(`Import ${imported.length} rows? Existing records will be kept.`)){records.push(...imported);save();alert('Import complete. Please review the records and check for duplicates.')}}catch(e){alert('Could not import CSV. Check the header row and file format.')}};fr.readAsText(file)}
+function reportCsv(){let years=[...new Set(records.map(r=>r.academicYear))].sort();let arr=years.map(y=>{let a=rowsForYear(y),n=new Set(a.map(r=>r.rollNo||r.id)).size,p=countUnique(a,'placed');return {academicYear:y,finalYearStudents:n,placedStudents:p,higherStudies:countUnique(a,'higherStudies'),entrepreneurs:countUnique(a,'entrepreneur'),placementPercent:n?(100*p/n).toFixed(2):''}});download('NBA46_yearwise_report.csv',toCsv(arr,Object.keys(arr[0]||{academicYear:'',finalYearStudents:'',placedStudents:'',higherStudies:'',entrepreneurs:'',placementPercent:''})),'text/csv;charset=utf-8')}
+$('loginForm').onsubmit=e=>{e.preventDefault();let stored=localStorage.getItem(PASSKEY)||'ChangeMe@123';if($('username').value.trim()==='admin'&&$('password').value===stored){sessionStorage.setItem(AUTH,'1');$('loginScreen').classList.add('hidden');$('app').classList.remove('hidden');load();render()}else $('loginError').textContent='Invalid username or password.'};
+function checkAuth(){if(sessionStorage.getItem(AUTH)==='1'){$('loginScreen').classList.add('hidden');$('app').classList.remove('hidden');load();render()}}
+$('logoutBtn').onclick=()=>{sessionStorage.removeItem(AUTH);location.reload()};
+$('settingsBtn').onclick=()=>{let old=localStorage.getItem(PASSKEY)||'ChangeMe@123';let next=prompt('Set a new admin password (minimum 12 characters):');if(next===null)return;if(next.length<12){alert('Use at least 12 characters.');return}if(!confirm('Change password for this browser?'))return;localStorage.setItem(PASSKEY,next);alert('Password changed in this browser. This is not secure authentication for a public website.')};
+$('academicYear').onchange=render;$('search').oninput=render;$('statusFilter').onchange=render;$('clearFilters').onclick=()=>{$('search').value='';$('statusFilter').value='';render()};
+document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{activeTab=b.dataset.tab;document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x===b));render()});
+$('addBtn').onclick=()=>openModal('Add student record');$('importBtn').onclick=()=>$('csvFile').click();$('csvFile').onchange=e=>{if(e.target.files[0])importCsv(e.target.files[0]);e.target.value=''};
+$('exportCsvBtn').onclick=()=>download('NBA46_student_records.csv',toCsv(records),'text/csv;charset=utf-8');
+$('backupBtn').onclick=()=>download('NBA46_backup_'+new Date().toISOString().slice(0,10)+'.json',JSON.stringify(records,null,2),'application/json');
+$('restoreBtn').onclick=()=>$('backupFile').click();$('backupFile').onchange=e=>{let f=e.target.files[0];if(!f)return;let fr=new FileReader();fr.onload=()=>{try{let d=JSON.parse(fr.result);if(!Array.isArray(d))throw Error();if(confirm('Replace all current records with '+d.length+' backup records? Export a backup first.')){records=d;save();alert('Backup restored.')}}catch{alert('Invalid backup file.')} };fr.readAsText(f);e.target.value=''};
+$('templateBtn').onclick=()=>download('NBA46_import_template.csv',headers.join(',')+'\r\n','text/csv;charset=utf-8');
+$('reportCsv').onclick=reportCsv;$('printReport').onclick=()=>window.print();
+checkAuth();
+</script>
+</body></html>
